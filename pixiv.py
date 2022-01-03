@@ -12,6 +12,8 @@ from pixivpy3 import AppPixivAPI, PixivAPI
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
+imagePath = os.getenv("IMAGE_DIR")
+
 pixiv_app = AppPixivAPI()
 pixiv_pub = PixivAPI()
 
@@ -95,9 +97,14 @@ def download():
     url = request.args.get("page")
     print(f"url: {url}")
     filename = os.path.basename(url)
-    pixiv_app.download(url)
+    filePath = imagePath + "/" + filename
+    if not os.path.exists(filePath):
+        print(f"download to {filePath}")
+        pixiv_app.download(url, path=imagePath)
+    else:
+        print(f"found {filePath}")
 
-    return send_file(filename, mimetype=mimetypes.guess_type(url)[0])
+    return send_file(filePath, mimetype=mimetypes.guess_type(url)[0])
 
 if __name__ == "__main__":
     app.run(debug = True)
