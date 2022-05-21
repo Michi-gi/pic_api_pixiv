@@ -29,7 +29,6 @@ refresh_token = res["refresh_token"]
 
 def login():
     """ login """
-    print(refresh_token)
     pixiv_app.auth(refresh_token=refresh_token)
 
 login()
