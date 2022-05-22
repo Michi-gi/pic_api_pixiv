@@ -15,6 +15,7 @@ pip install gunicorn
 |---|---|
 |IMAGE_DIR|画像キャッシュ用ディレクトリー|
 |REFRESH_TOKEN|認証用REFRESH TOKEN|
+
 ※REFRESH TOKENの取得方法は https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362 を参照。
 
 これが終われば次のコマンドで実行してください。
