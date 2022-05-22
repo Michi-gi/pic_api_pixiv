@@ -26,4 +26,3 @@ gunicorn --bind=0.0.0.0:5000 pixiv:app
 - Flask
 - gunicorn
 - [pixivpy](https://github.com/upbit/pixivpy)
-- [get-pixivpy-token](https://github.com/eggplants/get-pixivpy-token)
