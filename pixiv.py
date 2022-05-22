@@ -6,26 +6,15 @@ import json
 from flask import Flask, send_file
 from flask import request
 
-from gppt import GetPixivToken
-from pixivpy3 import AppPixivAPI, PixivAPI
+from pixivpy3 import AppPixivAPI
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-imagePath = os.getenv("IMAGE_DIR")
+image_path = os.getenv("IMAGE_DIR")
+refresh_token = os.getenv("REFRESH_TOKEN")
 
 pixiv_app = AppPixivAPI()
-pixiv_pub = PixivAPI()
-
-getToken = GetPixivToken()
-authJson = os.getenv("AUTH_JSON")
-with open(authJson, encoding="utf8") as file:
-    auth_info = json.load(file)
-
-pixiv_acc = auth_info["pixiv"]
-res = getToken.login(headless=True, user=pixiv_acc["user"], pass_=pixiv_acc["password"])
-access_token = res["access_token"]
-refresh_token = res["refresh_token"]
 
 def login():
     """ login """
@@ -61,19 +50,6 @@ def get_author_profile(author_id):
     print(author_detail)
     return author_detail
 
-@app.route('/author_pub/<author_id>')
-def get_author_profile_pub(author_id):
-    """ get author pub profile """
-    author_detail = pixiv_pub.users(int(author_id))
-    if "error" in author_detail:
-        if "OAuth" in author_detail["error"]["message"]:
-            print("error. relogin.")
-            login()
-            author_detail = pixiv_app.user_detail(author_id)
-
-    print(author_detail)
-    return author_detail
-
 @app.route('/author/<author_id>/pics')
 def get_pics_of_author(author_id):
     """ get pics specified author ID """
@@ -96,10 +72,10 @@ def download():
     url = request.args.get("page")
     print(f"url: {url}")
     filename = os.path.basename(url)
-    filePath = imagePath + "/" + filename
+    filePath = image_path + "/" + filename
     if not os.path.exists(filePath):
         print(f"download to {filePath}")
-        pixiv_app.download(url, path=imagePath)
+        pixiv_app.download(url, path=image_path)
     else:
         print(f"found {filePath}")
 
