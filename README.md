@@ -11,7 +11,7 @@ pip install Flask
 pip install gunicorn
 ```
 下記の環境変数を指定してください。
-｜変数|説明|
+|変数|説明|
 |---|---|
 |IMAGE_DIR|画像キャッシュ用ディレクトリー|
 |REFRESH_TOKEN|認証用REFRESH TOKEN|
